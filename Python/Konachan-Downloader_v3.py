@@ -11,20 +11,19 @@ import urllib.request
 import time
 
 # regexes
-url_regex = re.compile("konachan.com/image/.+?/.+?\.(?:png|jpg)")
+url_regex = re.compile("konachan.(?:com|net)/image/.+?/.+?\.(?:png|jpg)")
 name_regex = re.compile("image/.*?/(.*)")
 
 # variable
 counter1, counter2 = 0, 15000
 tag_filter = None
-domain = http.client.HTTPConnection("konachan.com")
+konachan = None
+
 
 # little function to calculate the last page of search results
-
-
 def page_count():
     # open connection to konachan.com
-    domain = http.client.HTTPConnection("konachan.com")
+    domain = http.client.HTTPConnection(konachan)
 
     domain.request("GET", "/post?page=1&tags=" + tags.replace(" ", "+"))
     while True:
@@ -34,7 +33,7 @@ def page_count():
         except http.client.BadStatusLine:
             time.sleep(1)
             domain.close()
-            domain = http.client.HTTPConnection("konachan.com")
+            domain = http.client.HTTPConnection(konachan)
             domain.request("GET", "/post?page=1&tags=" + tags.replace(" ", "+"))
 
     # we got our response, now it's time to find that number
@@ -66,22 +65,39 @@ def directory_size(directory_intern):
 
 # now we start
 
+
 # user has to set path for pictures
 print("Please set download location (full path required): ")
 path = sys.stdin.readline()
 
 # set tags, if user want to download specific pictures
-print("Set Tags (seperate multiple tags with a whitespace;" +
-    " connect tags with more than one word with an underscore): ")
+print("Set Tags (seperate multiple tags with a whitespace; " +
+    "connect tags with more than one word with an underscore): ")
 tags = sys.stdin.readline().strip("\n")
+
+# ask if they want to use the safe mode or not
+print("Are you wanna use the safe mode of konachan? [yes/no]")
+safemode = sys.stdin.readline().strip("\n")
+
+if safemode == "yes":
+    konachan = "konachan.net"
+else:
+    konachan = "konachan.com"
+
+domain = http.client.HTTPConnection(konachan)
 
 # chdir in $path and create directory if it not exists
 if not os.path.isdir(path.rstrip()):
     os.makedirs(path.rstrip(), 0o755, True)
 os.chdir(path.rstrip())
-if not os.path.isdir("Tags: " + tags):
-    os.makedirs("Tags: " + tags, 0o755, True)
-os.chdir("Tags: " + tags)
+if safemode == "yes":
+    if not os.path.isdir("Safemode: Tags: " + tags):
+        os.makedirs("Safemode: Tags: " + tags, 0o7555, True)
+    os.chdir("Safemode: Tags: " + tags)
+else:
+    if not os.path.isdir("Tags: " + tags):
+        os.makedirs("Tags: " + tags, 0o755, True)
+    os.chdir("Tags: " + tags)
 
 
 # creating directory for pics
@@ -104,7 +120,7 @@ for page_number in range(1, page_count()):
             break
         except http.client.BadStatusLine:
             domain.close()
-            domain = http.client.HTTPConnection("konachan.com")
+            domain = http.client.HTTPConnection(konachan)
             domain.request("GET", "/post?page=" + str(page_number) +
              "&tags=" + tags.replace(" ", "+"))
             time.sleep(1)
