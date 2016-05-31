@@ -87,17 +87,20 @@ else:
 domain = http.client.HTTPConnection(konachan)
 
 # chdir in $path and create directory if it not exists
+
+dir_tags = tags.replace(":", "_")
+
 if not os.path.isdir(path.rstrip()):
     os.makedirs(path.rstrip(), 0o755, True)
 os.chdir(path.rstrip())
 if safemode == "yes":
-    if not os.path.isdir("Safemode: Tags: " + tags):
-        os.makedirs("Safemode: Tags: " + tags, 0o7555, True)
-    os.chdir("Safemode: Tags: " + tags)
+    if not os.path.isdir("Safemode Tags " + dir_tags):
+        os.makedirs("Safemode Tags " + dir_tags, 0o755, True)
+    os.chdir("Safemode Tags " + dir_tags)
 else:
-    if not os.path.isdir("Tags: " + tags):
-        os.makedirs("Tags: " + tags, 0o755, True)
-    os.chdir("Tags: " + tags)
+    if not os.path.isdir("Tags " + dir_tags):
+        os.makedirs("Tags " + dir_tags, 0o755, True)
+    os.chdir("Tags " + dir_tags)
 
 
 # creating directory for pics
