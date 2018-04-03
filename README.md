@@ -16,8 +16,6 @@ Just use `go run` to run the tool without compiling.
 
 ### Flags
 
-The crawler has 3 flags to be used:
-
 * `--dir`: Defines the directory where to save pictures. Default is `%HOME/pictures/konachan/unnamed`. The `--dir` option defines the `unnamed` at the end. The `%HOME/pictures/konachan` is hardcoded at the moment.
 * `--tags`: A coma seperated list of tags to search for (--tags foo,bar,snafu,height:1080)
 * `--safe`: A boolean to enable safemode (Default is off)
