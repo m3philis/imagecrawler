@@ -30,6 +30,10 @@ func main() {
 	var safemode bool
 	var tags string
 
+	// variables for downloading
+	picHits := 1
+	page := 1
+
 	flag.StringVar(&path, "dir", "unnamed", "Directory to safe pictures. Default is %HOME/pictures/konachan/unnamed")
 	flag.BoolVar(&safemode, "safe", false, "Safemode to filter NSFW pictures. Default is false")
 	flag.StringVar(&tags, "tags", "", "Tags used to filter search query.")
@@ -48,10 +52,7 @@ func main() {
 	tags = strings.Replace(tags, ",", "+", -1)
 	tags = strings.TrimSuffix(tags, "\n")
 
-	fmt.Println("Starting to crawl :D")
-
-	picHits := 1
-	page := 1
+	fmt.Println("All bits corrupted; start to inject package")
 
 	for picHits > 0 {
 
