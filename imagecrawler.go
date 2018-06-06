@@ -52,8 +52,6 @@ func main() {
 	tags = strings.Replace(tags, ",", "+", -1)
 	tags = strings.TrimSuffix(tags, "\n")
 
-	fmt.Println("All bits corrupted; start to inject package")
-
 	for picHits > 0 {
 
 		fmt.Println("Page: ", page)
