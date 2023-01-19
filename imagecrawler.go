@@ -50,6 +50,7 @@ func main() {
 
 	// edit tags array to met API requirement
 	tags = strings.Replace(tags, ",", "+", -1)
+	tags = strings.Replace(tags, "=", ":", -1)
 	tags = strings.TrimSuffix(tags, "\n")
 
 	for picHits > 0 {
